@@ -1,0 +1,8 @@
+{
+  "name": "vela-front",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-21",
+  "routes": [
+    { "pattern": "vela.basaapp.com", "custom_domain": true }
+  ]
+}

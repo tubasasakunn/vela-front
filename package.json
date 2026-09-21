@@ -1,0 +1,14 @@
+{
+  "name": "vela-front",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx wrangler dev",
+    "deploy": "npx wrangler deploy",
+    "check": "npx tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20260921.1",
+    "typescript": "5.9.3"
+  }
+}
