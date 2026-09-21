@@ -1,4 +1,4 @@
-const downloadURL = "https://github.com/tubasasakunn/vela/releases/download/v0.3.0/Vela-0.3.0.dmg";
+const downloadURL = "https://github.com/tubasasakunn/vela/releases/download/v0.3.1/Vela-0.3.1.dmg";
 
 const page = `<!doctype html>
 <html lang="en">
@@ -77,7 +77,7 @@ const page = `<!doctype html>
 <body>
   <header class="shell site-header">
     <a class="brand" href="/"><i class="mark" aria-hidden="true"></i>Vela</a>
-    <nav><a href="#configure">Configure</a><a href="#privacy">Privacy</a></nav>
+    <nav><a href="/setup">Setup</a><a href="#configure">Configure</a><a href="#privacy">Privacy</a></nav>
   </header>
   <main>
     <section class="hero"><div class="orbit"></div><div class="shell hero-grid">
@@ -85,7 +85,7 @@ const page = `<!doctype html>
       <div class="control-surface" aria-label="A Vela command palette illustration"><div class="surface-bar"><div class="lights"><i></i><i></i><i></i></div><span>Vela</span></div><div class="palette"><div class="query"><span class="cursor"></span>open work</div><div class="result active"><span class="key">↵</span><b>Open workspace</b><small>Command</small></div><div class="result"><span class="key">⌘V</span><b>Clipboard history</b><small>Recent</small></div><div class="result"><span class="key">⌥⇥</span><b>Switch application</b><small>Window</small></div></div></div>
     </div></section>
     <section class="section"><div class="shell"><h2>One place for the things you reach for every day.</h2><p class="section-intro">Vela stays native and out of the way until you call it. There is no settings labyrinth to learn.</p><div class="capabilities"><article class="capability"><span>01</span><h3>Find and run</h3><p>Open apps, invoke your own commands, and move through your work without breaking stride.</p></article><article class="capability"><span>02</span><h3>Remember context</h3><p>Search clipboard history, expand snippets, and select useful text directly from the screen.</p></article><article class="capability"><span>03</span><h3>Put windows where they belong</h3><p>Snap, maximize, minimize, and move windows between displays with a keystroke.</p></article></div></div></section>
-    <section class="section" id="configure"><div class="shell config"><div class="config-copy"><h2>Configured in a file you can keep.</h2><p class="section-intro">Your Vela lives in normal JavaScript. Put it in Git, share it, or ask an agent to help refine it. The app validates your configuration before it adopts it.</p><p class="section-intro">Start with <code>vela init</code>; Vela writes a documented <code>vela.js</code> and guides permissions only when they are needed.</p></div><pre class="code"><span class="comment">// ~/.config/vela/vela.js</span>
+    <section class="section" id="configure"><div class="shell config"><div class="config-copy"><h2>Configured in a file you can keep.</h2><p class="section-intro">Your Vela lives in normal JavaScript. Put it in Git, share it, or ask an agent to help refine it. The app validates your configuration before it adopts it.</p><p class="section-intro">Start with <code>vela init</code>; it writes <code>vela.js</code> plus local instructions and a skill for your AI before configuration begins.</p></div><pre class="code"><span class="comment">// ~/.config/vela/vela.js</span>
 <span class="fn">Vela.configure</span>({
   clipboard: { limit: 200 },
 });
@@ -108,9 +108,45 @@ const page = `<!doctype html>
   <footer class="shell"><span>Vela is a native macOS utility.</span></footer>
 </body></html>`;
 
+const setupPage = `<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="VelaのAIセットアップ手順" />
+  <meta name="theme-color" content="#0d1725" />
+  <title>Vela を設定する</title>
+  <style>
+    :root { --night:#0d1725; --ink:#dfe9f2; --muted:#9badbd; --line:rgba(223,233,242,.17); --sea:#a7d5c8; --signal:#ff856b; --panel:#142235; --code:#0a1320; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--ink); background:var(--night); font:400 16px/1.65 ui-sans-serif,-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; } .shell { width:min(760px,calc(100% - 40px)); margin:auto; } header { height:76px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+    .brand { display:flex; gap:11px; align-items:center; text-decoration:none; font-weight:650; letter-spacing:-.02em; font-size:20px; } .mark { width:28px; height:28px; position:relative; display:block; border:2px solid var(--sea); border-radius:50% 50% 40% 50%; transform:rotate(-24deg); } .mark:after { content:""; position:absolute; width:7px; height:7px; top:7px; left:8px; border-radius:50%; background:var(--signal); }
+    header a:last-child { color:var(--muted); text-decoration:none; font-size:14px; } main { padding:96px 0 112px; } h1 { max-width:650px; margin:0; font-size:clamp(48px,8vw,76px); line-height:.98; letter-spacing:-.07em; font-weight:560; } .lead { max-width:610px; color:var(--muted); font-size:19px; margin:24px 0 64px; }
+    .steps { border-top:1px solid var(--line); } .step { display:grid; grid-template-columns:82px 1fr; gap:24px; padding:36px 0; border-bottom:1px solid var(--line); } .number { color:var(--signal); font:15px ui-monospace,SFMono-Regular,Menlo,monospace; padding-top:5px; } h2 { margin:0 0 9px; font-size:27px; line-height:1.15; letter-spacing:-.04em; font-weight:600; } p { margin:0; color:var(--muted); } code { padding:2px 5px; color:var(--ink); background:var(--code); font:14px ui-monospace,SFMono-Regular,Menlo,monospace; } .callout { margin-top:21px; padding:18px 20px; color:var(--ink); background:var(--panel); border-left:2px solid var(--sea); } .button { display:inline-flex; align-items:center; justify-content:center; min-height:49px; padding:0 20px; margin-top:42px; border:1px solid var(--sea); color:var(--ink); text-decoration:none; font-weight:650; } .button:hover { color:var(--night); background:var(--sea); } footer { padding:28px 0 38px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+    @media (max-width:540px) { .shell { width:min(100% - 32px,760px); } main { padding-top:62px; } .step { grid-template-columns:1fr; gap:7px; padding:29px 0; } .number { padding:0; } }
+  </style>
+</head>
+<body>
+  <header class="shell"><a class="brand" href="/"><i class="mark" aria-hidden="true"></i>Vela</a><a href="/">Velaについて</a></header>
+  <main class="shell">
+    <h1>Velaを、<br>いつものMacにする。</h1>
+    <p class="lead">Velaは設定画面を増やしません。最初にAIと少し話して、あなたが実際に使うショートカット、定型文、ウィンドウ操作だけを決めます。</p>
+    <div class="steps">
+      <section class="step"><div class="number">01</div><div><h2>Velaを開いて、AIを選ぶ</h2><p>DMGからApplicationsへ移したVelaを起動し、「AIと設定する」を選びます。この時点では、設定ファイルやAI向けのスキルはまだありません。</p></div></section>
+      <section class="step"><div class="number">02</div><div><h2>AIが初期化する</h2><p>Velaはこのページと、最初に初期化する依頼をAIに渡します。AIは保存先を確認してから <code>/Applications/Vela.app/Contents/Helpers/vela init --directory "&lt;設定フォルダ&gt;"</code> を実行します。指定がなければ <code>~/.config/vela</code> を使います。</p><div class="callout">Claude と Codex は依頼文入りの新しい会話を開きます。ChatGPT と Gemini では依頼文がコピーされる場合があるので、新しい会話で Command-V を押してください。</div></div></section>
+      <section class="step"><div class="number">03</div><div><h2>生成された案内をAIが読む</h2><p>初期化で <code>vela.js</code>、<code>AGENT.md</code>、設定用スキルが作られます。AIはこれらとAPIリファレンスを読んでから、設定を提案します。AIがファイルを開けない場合は、<code>AGENT.md</code> とスキルフォルダを会話に添付してください。</p></div></section>
+      <section class="step"><div class="number">04</div><div><h2>普段の作業を話す</h2><p>AIと、よく開くアプリ、欲しいショートカット、定型文、ウィンドウ操作を決めます。提案を確認してから設定し、最後に <code>vela check</code> と <code>vela reload</code> まで案内してもらいます。</p></div></section>
+      <section class="step"><div class="number">05</div><div><h2>使いながら育てる</h2><p>設定は普通のJavaScriptファイルです。何か足したくなったら、メニューバーの「Set up with AI…」からいつでも同じ相談を再開できます。</p></div></section>
+    </div>
+    <a class="button" href="${downloadURL}">Velaをダウンロード</a>
+  </main>
+  <footer class="shell">Velaは設定をAIへ自動送信しません。AIとの会話を始める前に、渡す内容を確認できます。</footer>
+</body></html>`;
+
 export default {
-  fetch(): Response {
-    return new Response(page, {
+  fetch(request): Response {
+    const body = new URL(request.url).pathname === "/setup" ? setupPage : page;
+    return new Response(body, {
       headers: {
         "content-type": "text/html; charset=UTF-8",
         "cache-control": "public, max-age=300",
