@@ -1,3 +1,4 @@
+const downloadURL = "https://github.com/tubasasakunn/vela/releases/download/v0.3.0/Vela-0.3.0.dmg";
 const releaseURL = "https://github.com/tubasasakunn/vela/releases/latest";
 const sourceURL = "https://github.com/tubasasakunn/vela";
 
@@ -82,7 +83,7 @@ const page = `<!doctype html>
   </header>
   <main>
     <section class="hero"><div class="orbit"></div><div class="shell hero-grid">
-      <div><h1>Make your Mac<br>answer to you.</h1><p class="lead">Vela is a native control surface for your Mac: launch what matters, keep what you copied, move your windows, and make every shortcut yours.</p><div class="actions"><a class="button" href="${releaseURL}">Download Vela</a><a class="button secondary" href="#configure">See the config</a><p class="install-note">Free · macOS 14+ · Apple-notarized release</p></div></div>
+      <div><h1>Make your Mac<br>answer to you.</h1><p class="lead">Vela is a native control surface for your Mac: launch what matters, keep what you copied, move your windows, and make every shortcut yours.</p><div class="actions"><a class="button" href="${downloadURL}">Download DMG</a><a class="button secondary" href="#configure">See the config</a><p class="install-note">Free · macOS 14+ · Apple silicon · Apple-notarized release</p></div></div>
       <div class="control-surface" aria-label="A Vela command palette illustration"><div class="surface-bar"><div class="lights"><i></i><i></i><i></i></div><span>Vela</span></div><div class="palette"><div class="query"><span class="cursor"></span>open work</div><div class="result active"><span class="key">↵</span><b>Open workspace</b><small>Command</small></div><div class="result"><span class="key">⌘V</span><b>Clipboard history</b><small>Recent</small></div><div class="result"><span class="key">⌥⇥</span><b>Switch application</b><small>Window</small></div></div></div>
     </div></section>
     <section class="section"><div class="shell"><h2>One place for the things you reach for every day.</h2><p class="section-intro">Vela stays native and out of the way until you call it. There is no settings labyrinth to learn.</p><div class="capabilities"><article class="capability"><span>01</span><h3>Find and run</h3><p>Open apps, invoke your own commands, and move through your work without breaking stride.</p></article><article class="capability"><span>02</span><h3>Remember context</h3><p>Search clipboard history, expand snippets, and select useful text directly from the screen.</p></article><article class="capability"><span>03</span><h3>Put windows where they belong</h3><p>Snap, maximize, minimize, and move windows between displays with a keystroke.</p></article></div></div></section>
@@ -104,7 +105,7 @@ const page = `<!doctype html>
   run: () =&gt; Vela.shell(<span class="str">"open ~/workspace"</span>),
 });</pre></div></section>
     <section class="section" id="privacy"><div class="shell"><h2>Your control surface should not become someone else’s data surface.</h2><div class="privacy"><p><strong>No account. No telemetry.</strong>Vela does not require a sign-up, and it does not include analytics or advertising SDKs.</p><p><strong>Private by design.</strong>Configuration remains on your Mac. Context snippets use Apple’s on-device model only; secure text fields are excluded.</p></div></div></section>
-    <section class="closing"><div class="shell"><h2>Set the shortcut.<br>Make it yours.</h2><div class="actions" style="justify-content:center"><a class="button" href="${releaseURL}">Download Vela</a><a class="button secondary" href="${sourceURL}">View on GitHub</a></div></div></section>
+    <section class="closing"><div class="shell"><h2>Set the shortcut.<br>Make it yours.</h2><div class="actions" style="justify-content:center"><a class="button" href="${downloadURL}">Download DMG</a><a class="button secondary" href="${sourceURL}">View on GitHub</a></div></div></section>
   </main>
   <footer class="shell"><a href="${sourceURL}">GitHub</a><a href="${releaseURL}">Releases</a><span>Vela is a native macOS utility.</span></footer>
 </body></html>`;
