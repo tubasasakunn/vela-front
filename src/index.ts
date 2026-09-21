@@ -1,4 +1,4 @@
-const downloadURL = "https://github.com/tubasasakunn/vela/releases/download/v0.3.1/Vela-0.3.1.dmg";
+const downloadURL = "https://github.com/tubasasakunn/vela/releases/download/v0.3.2/Vela-0.3.2.dmg";
 
 const page = `<!doctype html>
 <html lang="en">
@@ -77,7 +77,7 @@ const page = `<!doctype html>
 <body>
   <header class="shell site-header">
     <a class="brand" href="/"><i class="mark" aria-hidden="true"></i>Vela</a>
-    <nav><a href="/setup">Setup</a><a href="#configure">Configure</a><a href="#privacy">Privacy</a></nav>
+    <nav><a href="/setup.md">Setup</a><a href="#configure">Configure</a><a href="#privacy">Privacy</a></nav>
   </header>
   <main>
     <section class="hero"><div class="orbit"></div><div class="shell hero-grid">
@@ -143,10 +143,123 @@ const setupPage = `<!doctype html>
   <footer class="shell">Velaは設定をAIへ自動送信しません。AIとの会話を始める前に、渡す内容を確認できます。</footer>
 </body></html>`;
 
+const setupMarkdown = `# Vela setup guide
+
+Vela is a native macOS control surface for launching commands, searching clipboard
+history, controlling windows, and expanding snippets. Its behavior is defined in
+one local JavaScript configuration file. This guide is the canonical setup
+procedure for people and LLM assistants.
+
+## Prerequisites
+
+- macOS 14 or later on Apple silicon.
+- Install the Apple-notarized DMG from [the latest Vela release](${downloadURL}),
+  then drag Vela to Applications. Homebrew is also supported:
+
+  \`\`\`sh
+  brew install tubasasakunn/tap/vela
+  \`\`\`
+
+## First-time setup
+
+1. Ask the person where they want Vela's configuration folder. Use
+   \`~/.config/vela\` when they have no preference.
+2. Run the helper from the installed app. The directory argument must be an
+   absolute path:
+
+   \`\`\`sh
+   /Applications/Vela.app/Contents/Helpers/vela init --directory "<configuration-folder>"
+   \`\`\`
+
+3. Do not propose or edit settings until that command finishes. It creates (or
+   preserves) \`vela.js\`, \`AGENT.md\`, and
+   \`.agent/skills/vela-configuration/\` in the configuration folder.
+4. Before suggesting a configuration, read \`AGENT.md\`,
+   \`.agent/skills/vela-configuration/SKILL.md\`, and its
+   \`references/vela-js-api.md\`. If the assistant cannot access the folder,
+   ask the person to attach those files to the conversation.
+5. Ask about frequently opened apps, desired shortcuts, snippets, and window
+   actions. Explain the proposed changes and any possible shortcut conflicts,
+   then obtain confirmation before editing \`vela.js\`.
+6. Validate and activate the approved configuration:
+
+   \`\`\`sh
+   /Applications/Vela.app/Contents/Helpers/vela check
+   /Applications/Vela.app/Contents/Helpers/vela reload
+   \`\`\`
+
+## Permissions
+
+Use the guided command after configuration. It shows current status, requests
+only missing permissions, and continues after macOS authorization:
+
+\`\`\`sh
+/Applications/Vela.app/Contents/Helpers/vela permissions setup
+\`\`\`
+
+Do not reset existing macOS permissions. If macOS no longer presents a prompt,
+use \`vela permissions open <name>\` to open the relevant System Settings page.
+
+## Safety and scope
+
+- Keep settings in \`vela.js\`; Vela validates them before the running app adopts
+  them.
+- Use only the documented Vela API in the generated configuration skill.
+- Do not add filesystem, network, or environment access to the configuration.
+- Preserve existing user settings unless the person explicitly asks to change
+  them.
+`;
+
+const llmText = `# Vela
+
+Vela is a native macOS control surface configured through a local JavaScript
+file. It provides a launcher, clipboard history, snippets, global hotkeys, and
+window actions. Vela has no account, telemetry, or advertising SDKs.
+
+## Setup
+
+- [Canonical LLM setup guide](/setup.md): installation, initialization,
+  generated configuration instructions, validation, and permissions.
+- [Latest notarized download](${downloadURL})
+- [Source and release history](https://github.com/tubasasakunn/vela)
+
+## Assistant behavior
+
+Read the setup guide before changing a Vela configuration. Initialize first,
+read the generated AGENT.md and Vela configuration skill, ask about the user's
+workflow, explain proposed shortcuts and conflicts, and get confirmation before
+editing. Finish with \`vela check\` and \`vela reload\`.
+`;
+
 export default {
   fetch(request): Response {
-    const body = new URL(request.url).pathname === "/setup" ? setupPage : page;
-    return new Response(body, {
+    const url = new URL(request.url);
+    if (url.pathname === "/setup") {
+      return Response.redirect(new URL("/setup.md", url).toString(), 308);
+    }
+    if (url.pathname === "/setup.md") {
+      return new Response(setupMarkdown, {
+        headers: {
+          "content-type": "text/markdown; charset=UTF-8",
+          "cache-control": "public, max-age=300",
+          "x-content-type-options": "nosniff",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "x-frame-options": "DENY",
+        },
+      });
+    }
+    if (url.pathname === "/llm.txt" || url.pathname === "/llms.txt") {
+      return new Response(llmText, {
+        headers: {
+          "content-type": "text/plain; charset=UTF-8",
+          "cache-control": "public, max-age=300",
+          "x-content-type-options": "nosniff",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "x-frame-options": "DENY",
+        },
+      });
+    }
+    return new Response(page, {
       headers: {
         "content-type": "text/html; charset=UTF-8",
         "cache-control": "public, max-age=300",
