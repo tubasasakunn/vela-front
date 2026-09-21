@@ -1,6 +1,4 @@
 const downloadURL = "https://github.com/tubasasakunn/vela/releases/download/v0.3.0/Vela-0.3.0.dmg";
-const releaseURL = "https://github.com/tubasasakunn/vela/releases/latest";
-const sourceURL = "https://github.com/tubasasakunn/vela";
 
 const page = `<!doctype html>
 <html lang="en">
@@ -79,7 +77,7 @@ const page = `<!doctype html>
 <body>
   <header class="shell site-header">
     <a class="brand" href="/"><i class="mark" aria-hidden="true"></i>Vela</a>
-    <nav><a href="#configure">Configure</a><a href="#privacy">Privacy</a><a href="${sourceURL}">Source</a></nav>
+    <nav><a href="#configure">Configure</a><a href="#privacy">Privacy</a></nav>
   </header>
   <main>
     <section class="hero"><div class="orbit"></div><div class="shell hero-grid">
@@ -105,9 +103,9 @@ const page = `<!doctype html>
   run: () =&gt; Vela.shell(<span class="str">"open ~/workspace"</span>),
 });</pre></div></section>
     <section class="section" id="privacy"><div class="shell"><h2>Your control surface should not become someone else’s data surface.</h2><div class="privacy"><p><strong>No account. No telemetry.</strong>Vela does not require a sign-up, and it does not include analytics or advertising SDKs.</p><p><strong>Private by design.</strong>Configuration remains on your Mac. Context snippets use Apple’s on-device model only; secure text fields are excluded.</p></div></div></section>
-    <section class="closing"><div class="shell"><h2>Set the shortcut.<br>Make it yours.</h2><div class="actions" style="justify-content:center"><a class="button" href="${downloadURL}">Download DMG</a><a class="button secondary" href="${sourceURL}">View on GitHub</a></div></div></section>
+    <section class="closing"><div class="shell"><h2>Set the shortcut.<br>Make it yours.</h2><div class="actions" style="justify-content:center"><a class="button" href="${downloadURL}">Download DMG</a></div></div></section>
   </main>
-  <footer class="shell"><a href="${sourceURL}">GitHub</a><a href="${releaseURL}">Releases</a><span>Vela is a native macOS utility.</span></footer>
+  <footer class="shell"><span>Vela is a native macOS utility.</span></footer>
 </body></html>`;
 
 export default {
