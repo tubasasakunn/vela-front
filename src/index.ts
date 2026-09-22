@@ -123,7 +123,8 @@ procedure for people and LLM assistants.
 
 - macOS 14 or later on Apple silicon.
 - Install the Apple-notarized DMG from [the latest Vela release](${downloadURL}),
-  then drag Vela to Applications. Homebrew is also supported:
+  then open Vela from the DMG. Vela moves itself to Applications, relaunches,
+  and opens the AI-guided setup. Homebrew is also supported:
 
   \`\`\`sh
   brew install tubasasakunn/tap/vela
