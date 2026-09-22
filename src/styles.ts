@@ -12,5 +12,56 @@ export const styles = String.raw`
 @media(max-width:520px){.hero{padding-top:25px}h1{font-size:clamp(29px,7.5vw,39px);line-height:1.5}.demo-controls{gap:10px}.desktop[data-app=safari][data-step="1"] .browser-window{right:6%;width:88%}.calendar-grid{font-size:3cqw}.calendar-event{font-size:2.8cqw}.calendar-weekdays{font-size:2cqw}}
 @media(max-width:520px){.desktop{aspect-ratio:.95}.vela-palette{top:37%}.palette-heading{font-size:10px;padding:8px 10px}.palette-heading img{width:16px;height:16px}.searchbox{padding:8px 0}.searchbox input{font-size:16px}.demo-results{padding-inline:5px}.result{min-height:44px;padding:6px 8px;gap:8px}.result b{font-size:12px}.result small{font-size:10px;margin-top:2px}.result-icon{width:25px;height:25px;font-size:12px}.palette-footer{font-size:9px;padding:7px 10px}.desktop[data-mode=launcher] .vela-palette{top:25%}.demo-toast{font-size:10px}}
 @media(max-width:520px){.desktop{width:100%;min-width:0;aspect-ratio:auto;height:410px}.vela-palette{top:31%}}
+/* Give each experience the space of a product view, rather than a thumbnail. */
+.experience{width:min(1280px,calc(100% - 64px));max-width:none;margin-top:48px}
+.demo-heading{font-size:14px;padding-bottom:20px}.text-button{font-size:13px}
+.demo-tabs{gap:12px;margin-bottom:20px}.demo-tabs button{font-size:14px;padding:13px 24px}
+.key-guide{position:sticky;top:12px;z-index:10;min-height:108px;padding:18px 28px;box-shadow:0 6px 20px #fafaff80}
+.desktop{aspect-ratio:1.8;border-radius:20px}
+.demo-caption p{font-size:14px;max-width:720px}.demo-next{font-size:14px;padding:15px 22px}.demo-disclaimer{font-size:11px}
+.features{width:min(1200px,calc(100% - 64px))}.feature-grid{grid-template-columns:1fr;gap:88px}
+.feature{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);grid-template-areas:"art title" "art body";grid-template-rows:1fr 1fr;column-gap:64px}
+.feature-art{grid-area:art;height:auto;aspect-ratio:1.55;border-radius:24px}
+.feature h3{grid-area:title;align-self:end;font-size:clamp(22px,2.1vw,28px);margin:0 0 18px;line-height:1.6}
+.feature>p{grid-area:body;align-self:start;font-size:15px;line-height:2;max-width:360px}
+.feature:nth-child(even){grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);grid-template-areas:"title art" "body art"}
+@media(min-width:761px){
+  .notes-window{left:5%;top:12%;width:66%;height:80%}
+  .vela-palette{left:36%;top:22%;width:58%}
+  .desktop[data-mode=launcher] .vela-palette{left:21%;top:20%}
+  .palette-heading{font-size:clamp(12px,1.2cqw,16px);padding:1.4cqw 1.7cqw .7cqw}
+  .searchbox input{font-size:clamp(16px,1.65cqw,22px)}
+  .result{min-height:54px;padding:1.2cqw}.result b{font-size:clamp(14px,1.5cqw,20px)}
+  .result small{font-size:clamp(11px,1.05cqw,14px)}
+  .result-icon{width:3.8cqw;height:3.8cqw;font-size:1.5cqw}
+  .palette-footer{font-size:clamp(11px,1.1cqw,14px)}
+}
+@media(min-width:761px) and (max-width:1000px){
+  .desktop{aspect-ratio:1.35}.vela-palette{left:29%;width:66%;top:27%}
+  .desktop[data-mode=launcher] .vela-palette{left:17%;top:24%}
+  .key-guide{flex-direction:row;text-align:left;padding:18px;gap:16px}
+  .guide-copy strong{font-size:15px}.guide-action>span{font-size:9px}
+  .feature,.feature:nth-child(even){column-gap:32px}.feature-art{aspect-ratio:1.1}
+}
+@media(max-width:760px){
+  .experience{width:calc(100% - 24px);margin-top:36px}.desktop{aspect-ratio:1.35;border-radius:14px}
+  .key-guide{position:static;padding:20px 12px;box-shadow:none}
+  .demo-heading{font-size:11px;padding-inline:6px}.text-button{font-size:11px}
+  .demo-tabs{gap:4px}.demo-tabs button{font-size:12px;padding:12px}
+  .demo-caption{padding-inline:8px}.demo-caption p{font-size:13px}.demo-next{font-size:13px}
+  .demo-disclaimer{font-size:10px;padding-inline:8px}
+  .features{width:calc(100% - 40px)}.feature-grid{gap:56px}
+  .feature,.feature:nth-child(even){display:block}.feature-art{aspect-ratio:1.35;border-radius:18px}
+  .feature h3{font-size:23px;margin:24px 0 12px}.feature>p{font-size:14px;max-width:520px}
+}
+@media(max-width:520px){
+  .desktop{height:460px;aspect-ratio:auto}.demo-tabs button{font-size:11px;padding:10px 6px}
+  .demo-heading{font-size:10px}.text-button{font-size:10px}
+  .guide-copy strong{font-size:15px}.guide-copy p{font-size:12px}
+  .vela-palette{width:92%;left:4%;top:32%}.desktop[data-mode=launcher] .vela-palette{left:4%;top:25%}
+  .palette-heading{font-size:12px;padding:10px 12px}.result{min-height:50px;padding:8px}
+  .result b{font-size:14px}.result small{font-size:11px}.palette-footer{font-size:11px;padding:9px 12px}
+  .demo-caption p{min-height:0}.demo-next{padding:14px}.feature-art{aspect-ratio:1.2}
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
 `;

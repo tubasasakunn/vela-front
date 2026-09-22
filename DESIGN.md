@@ -17,7 +17,9 @@ Brand                      Features / Setup / Download
                        Download DMG
           Clipboard / Window layout / App launcher
                  Interactive Mac illustration
-           Four feature examples in two columns
+          Large illustration | Feature description
+          Feature description | Large illustration
+                 (one feature per row)
          AI-guided setup + editable configuration
                      FAQ / Download
 ```
@@ -28,6 +30,14 @@ text stays outside them. There is no decorative card around every paragraph.
 The design review replaced the former dark, abstract positioning and code-heavy
 hero with concrete actions and a direct download. No customer claims or metrics
 were invented.
+
+The experience now breaks out of the text column to a maximum 1280px (formerly
+940px), with larger palettes and readable control text. The existing light
+palette and system/Hiragino type stay unchanged. The key guide stays above the
+desktop while scrolling on larger screens; mobile keeps it in normal flow.
+Feature illustrations each get their own wide row, with adjacent left-aligned
+copy and alternating placement. Below 760px these become single-column rows.
+The emphasis is on the existing interactions, not new decorative components.
 
 ## Demo contract
 
