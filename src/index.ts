@@ -1,4 +1,5 @@
-const downloadURL = "https://github.com/tubasasakunn/vela/releases/download/v0.3.2/Vela-0.3.2.dmg";
+const downloadURL = "https://github.com/tubasasakunn/vela/releases/latest";
+const appIconURL = "https://raw.githubusercontent.com/tubasasakunn/vela/main/Resources/AppIcon.iconset/icon_512x512.png";
 
 const page = `<!doctype html>
 <html lang="en">
@@ -7,9 +8,12 @@ const page = `<!doctype html>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="A native macOS control surface that you configure in JavaScript." />
   <meta name="theme-color" content="#0d1725" />
+  <link rel="icon" type="image/png" href="${appIconURL}" />
+  <link rel="apple-touch-icon" href="${appIconURL}" />
   <meta property="og:title" content="Vela — Make your Mac answer to you." />
   <meta property="og:description" content="A native macOS launcher, clipboard history, window control, and more — configured in one JavaScript file." />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="${appIconURL}" />
   <title>Vela — Make your Mac answer to you.</title>
   <style>
     :root { --night:#0d1725; --ink:#dfe9f2; --muted:#9badbd; --line:rgba(223,233,242,.17); --sea:#a7d5c8; --signal:#ff856b; --panel:#142235; --code:#0a1320; }
@@ -20,8 +24,7 @@ const page = `<!doctype html>
     .shell { width:min(1160px,calc(100% - 48px)); margin:auto; }
     .site-header { height:76px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
     .brand { display:flex; gap:11px; align-items:center; text-decoration:none; font-weight:650; letter-spacing:-.02em; font-size:20px; }
-    .mark { width:28px; height:28px; position:relative; display:block; border:2px solid var(--sea); border-radius:50% 50% 40% 50%; transform:rotate(-24deg); }
-    .mark:after { content:""; position:absolute; width:7px; height:7px; top:7px; left:8px; border-radius:50%; background:var(--signal); }
+    .brand-icon { width:32px; height:32px; display:block; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,.28); }
     nav { display:flex; align-items:center; gap:24px; color:var(--muted); font-size:14px; }
     nav a { text-decoration:none; }
     nav a:hover { color:var(--ink); }
@@ -76,7 +79,7 @@ const page = `<!doctype html>
 </head>
 <body>
   <header class="shell site-header">
-    <a class="brand" href="/"><i class="mark" aria-hidden="true"></i>Vela</a>
+    <a class="brand" href="/"><img class="brand-icon" src="${appIconURL}" width="32" height="32" alt="" />Vela</a>
     <nav><a href="/setup.md">Setup</a><a href="#configure">Configure</a><a href="#privacy">Privacy</a></nav>
   </header>
   <main>
