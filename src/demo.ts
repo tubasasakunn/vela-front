@@ -5,39 +5,45 @@ export const demoScript = String.raw`
   const tabs = [...document.querySelectorAll('[data-mode][role=tab]')];
   const search = document.querySelector('#demo-search');
   const results = document.querySelector('#demo-results');
-  const next = document.querySelector('#demo-next');
-  const caption = document.querySelector('#demo-caption');
   const palette = document.querySelector('#palette');
   const pasted = document.querySelector('#pasted-text');
-  const toast = document.querySelector('#demo-toast');
   const demo = document.querySelector('#demo');
   const keyButton = document.querySelector('#demo-keys');
   const guideTitle = document.querySelector('#guide-title');
   const guideHelp = document.querySelector('#guide-help');
   const shortcuts = {clipboard:'7', windows:'8', launcher:'9'};
   let opened = false;
+  let status = '';
+  function frameDemo() {
+    const top = demo.getBoundingClientRect().top;
+    if (top < 0 || panel.getBoundingClientRect().bottom > window.innerHeight) {
+      // Align before focusing search; animated scrolling can be cancelled by focus.
+      demo.scrollIntoView({block:'start',behavior:'instant'});
+    }
+  }
   function guide() {
-    const done = step === 1;
-    const action = mode === 'windows' ? 'ウィンドウを並べる' : mode === 'launcher' ? 'アプリ検索を開く' : 'コピー履歴を開く';
-    guideTitle.textContent = done ? 'できました！もう一度試せます' : opened ? '② 選んで、Enterで' + (mode === 'launcher' ? '開く' : '貼り付ける') : '① このキーで、' + action;
-    guideHelp.textContent = done ? 'キーのボタンを押すと、最初から試せます。' : opened ? '↑ ↓ で選択。文字を入力すると絞り込めます。' : 'ControlとShiftを押しながら、数字の' + shortcuts[mode] + '。';
-    const keys = done ? ['もう一度 ↻'] : opened ? ['Enter ↵'] : ['Control', 'Shift', shortcuts[mode]];
+    const action = mode === 'windows' ? (step === 1 ? 'ウィンドウの重なりを戻す' : 'ウィンドウを並べる') : mode === 'launcher' ? 'アプリ検索を開く' : 'コピー履歴を開く';
+    guideTitle.textContent = opened ? '選んで、Enterで' + (mode === 'launcher' ? '開く' : '貼り付ける') : status || action;
+    guideHelp.textContent = opened ? '↑ ↓ で選択・文字入力で検索・Escで閉じる' : status ? (mode === 'windows' ? '同じキーで、並べる・戻すを何度でも。' : '同じキーで、続けて' + (mode === 'launcher' ? '別のアプリを開けます。' : '履歴を取り出せます。')) : 'OptionとShiftを押しながら、数字の' + shortcuts[mode] + '。';
+    const keys = opened ? ['Enter ↵'] : ['Option', 'Shift', shortcuts[mode]];
     keyButton.replaceChildren();
     keys.forEach((key, index) => {
       if (index) {const plus = document.createElement('span');plus.textContent = '+';plus.setAttribute('aria-hidden', 'true');keyButton.append(plus);}
       const cap = document.createElement('kbd');cap.textContent = key;keyButton.append(cap);
     });
-    keyButton.setAttribute('aria-label', done ? 'もう一度試す' : opened ? 'Enterで選択を確定' : 'Control + Shift + ' + shortcuts[mode] + '：' + action);
-    keyButton.disabled = opened && !done && !filtered.length;
-    keyButton.setAttribute('aria-keyshortcuts', done ? '' : opened ? 'Enter' : 'Control+Shift+' + shortcuts[mode]);
+    keyButton.setAttribute('aria-label', opened ? 'Enterで選択を確定' : 'Option + Shift + ' + shortcuts[mode] + '：' + action);
+    keyButton.disabled = opened && !filtered.length;
+    keyButton.setAttribute('aria-keyshortcuts', opened ? 'Enter' : 'Alt+Shift+' + shortcuts[mode]);
   }
-  function advance(focusSearch = true) {
-    if (step === 1) {reset(mode);return;}
-    if (mode === 'windows' || opened) {complete(filtered[selected]);return;}
+  function openPalette(focusSearch = true) {
+    if (!opened) {search.value = '';selected = 0;}
     opened = true; panel.dataset.open = 'true'; palette.inert = false;
-    caption.textContent = mode === 'launcher' ? 'アプリの名前を入力して、Enterで開いてみましょう。' : '履歴を選んで、Enterでメモに貼り付けてみましょう。';
     renderResults();
     if (focusSearch) search.focus({preventScroll:true});
+  }
+  function advance(focusSearch = true) {
+    if (mode === 'windows' || opened) complete(filtered[selected]);
+    else openPalette(focusSearch);
   }
   const clips = [
     {title:'https://studio.example/design',sub:'リンク · 2分前',icon:'↗'},
@@ -65,33 +71,29 @@ export const demoScript = String.raw`
       if (i === selected) { const key = document.createElement('kbd'); key.textContent = '↵'; button.append(key); }
       button.addEventListener('click', () => {stopTour();complete(item);}); results.append(button);
     });
-    next.disabled = opened && step === 0 && filtered.length === 0;
-    if (opened && step === 0) next.textContent = mode === 'launcher' ? (filtered[selected]?.title || 'アプリ') + 'を開く ↵' : '選んだ内容を貼り付ける ↵';
     guide();
   }
   function complete(item) {
-    if (step === 1) { reset(mode); return; }
     if (mode !== 'windows' && !item) return;
-    step = 1; panel.dataset.step = '1'; palette.inert = true;
+    step = mode === 'windows' && step === 1 ? 0 : 1;
+    panel.dataset.step = String(step); opened = false; panel.dataset.open = 'false'; palette.inert = true;
     if (mode === 'clipboard') {
       pasted.textContent = item.title; pasted.classList.add('filled');
-      toast.textContent = '✓ 貼り付けました';
-      caption.textContent = '履歴から、そのまま貼り付け。前のアプリへコピーし直しに戻る必要はありません。';
+      status = '✓ 貼り付けました';
     } else if (mode === 'windows') {
-      toast.textContent = '✓ 左右に並びました'; caption.textContent = 'メモと参考ページが、左右ぴったりに。位置もサイズも、ドラッグせずに整えられます。';
+      status = step === 1 ? '✓ 左右に並びました' : '✓ 元の重なりに戻しました';
     } else {
       panel.dataset.app = item.title === 'Safari' ? 'safari' : item.title === 'カレンダー' ? 'calendar' : 'notes';
       document.querySelector('.notes-window .window-bar>span:nth-child(2)').textContent = item.title;
       document.querySelector('.note-body h3').textContent = item.title === 'メモ' ? '新しいアイデアを書こう。' : item.title === 'Safari' ? '参考ページを見つけよう。' : '今週の予定を確認しよう。';
       document.querySelector('#menu-app').textContent = item.title;
-      toast.textContent = '✓ ' + item.title + 'を開きました'; caption.textContent = '名前で探してEnter。Dockから探す代わりに、キーボードからアプリを呼び出せます。';
+      status = '✓ ' + item.title + 'を開きました';
     }
-    next.textContent = 'もう一度試す ↻'; next.disabled = false;
     guide();
-    if (palette.contains(document.activeElement)) next.focus({preventScroll:true});
+    if (palette.contains(document.activeElement)) keyButton.focus({preventScroll:true});
   }
   function reset(newMode) {
-    mode = newMode; step = 0; selected = 0; opened = false; panel.dataset.open = 'false';
+    mode = newMode; step = 0; selected = 0; opened = false; status = ''; panel.dataset.open = 'false';
     panel.dataset.mode = mode; panel.dataset.step = '0'; delete panel.dataset.app; panel.setAttribute('aria-labelledby', 'tab-' + mode);
     palette.inert = true;
     tabs.forEach(tab => {const active = tab.dataset.mode === mode;tab.setAttribute('aria-selected', String(active));tab.tabIndex = active ? 0 : -1;});
@@ -103,36 +105,36 @@ export const demoScript = String.raw`
     document.querySelector('#palette-action').textContent = mode === 'launcher' ? '開く' : '貼り付け';
     search.value = ''; search.placeholder = mode === 'launcher' ? 'アプリの名前を入力…' : 'コピーした内容を検索…';
     search.setAttribute('aria-label', mode === 'launcher' ? 'デモのアプリを検索' : 'デモのコピー履歴を検索');
-    caption.textContent = mode === 'windows' ? '重なったウィンドウを、左右にすっきり。' : mode === 'launcher' ? 'Dockから探さず、名前でアプリを呼び出してみましょう。' : 'コピーし直さず、前にコピーしたリンクを呼び出してみましょう。';
     renderResults();
-    next.textContent = mode === 'windows' ? 'ウィンドウを並べる →' : mode === 'launcher' ? 'アプリ検索を開く →' : 'コピー履歴を開く →';
   }
   tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => {stopTour();reset(tab.dataset.mode);});
+    tab.addEventListener('click', () => {stopTour();reset(tab.dataset.mode);frameDemo();});
     tab.addEventListener('keydown', event => {
       let index;
       if (event.key === 'ArrowRight') index = (i + 1) % tabs.length;
       if (event.key === 'ArrowLeft') index = (i + tabs.length - 1) % tabs.length;
       if (event.key === 'Home') index = 0;
       if (event.key === 'End') index = tabs.length - 1;
-      if (index !== undefined) {event.preventDefault();stopTour();reset(tabs[index].dataset.mode);tabs[index].focus();}
+      if (index !== undefined) {event.preventDefault();stopTour();reset(tabs[index].dataset.mode);tabs[index].focus();frameDemo();}
     });
   });
-  next.addEventListener('click', () => {stopTour();advance();});
-  keyButton.addEventListener('click', () => {stopTour();advance();});
+  keyButton.addEventListener('click', () => {stopTour();frameDemo();advance();});
   document.addEventListener('keydown', event => {
-    if (event.isComposing || event.repeat || event.defaultPrevented || !event.ctrlKey || !event.shiftKey || event.metaKey || event.altKey) return;
+    if (event.isComposing || event.repeat || event.defaultPrevented || !event.altKey || !event.shiftKey || event.metaKey || event.ctrlKey) return;
     const targetMode = Object.keys(shortcuts).find(key => event.code === 'Digit' + shortcuts[key]);
     if (!targetMode) return;
-    const rect = document.querySelector('.key-guide').getBoundingClientRect();
+    const rect = panel.getBoundingClientRect();
     if (rect.bottom <= 0 || rect.top >= window.innerHeight || (!demo.contains(event.target) && event.target !== document.body)) return;
-    event.preventDefault();stopTour();reset(targetMode);advance();
+    event.preventDefault();stopTour();frameDemo();
+    if (targetMode !== mode) reset(targetMode);
+    if (mode === 'windows') complete();
+    else openPalette();
   });
-  document.querySelector('#replay').addEventListener('click', () => {stopTour();reset(mode);});
   search.addEventListener('focus', stopTour);
   search.addEventListener('input', () => {stopTour();selected = 0;renderResults();});
   play.addEventListener('click', () => {
     if (tourTimers.length) {stopTour();return;}
+    frameDemo();
     play.textContent = 'Ⅱ 再生を止める'; play.setAttribute('aria-pressed', 'true'); reset('clipboard');
     const schedule = (delay, action) => tourTimers.push(setTimeout(action, delay));
     schedule(900, () => advance(false));
@@ -150,8 +152,13 @@ export const demoScript = String.raw`
     if (event.isComposing || event.keyCode === 229 || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return;
     stopTour();
     if (event.key === 'Enter') {event.preventDefault();complete(filtered[selected]);}
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {event.preventDefault();selected = Math.max(0,Math.min(filtered.length - 1,selected + (event.key === 'ArrowDown' ? 1 : -1)));renderResults();}
-    if (event.key === 'Escape') {reset(mode);tabs.find(tab => tab.dataset.mode === mode).focus();}
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();selected = Math.max(0,Math.min(filtered.length - 1,selected + (event.key === 'ArrowDown' ? 1 : -1)));renderResults();
+      results.querySelector('.selected')?.scrollIntoView({block:'nearest',behavior:'instant'});
+    }
+    if (event.key === 'Escape') {
+      event.preventDefault();opened = false;panel.dataset.open = 'false';palette.inert = true;guide();keyButton.focus({preventScroll:true});
+    }
   });
   reset(mode);
 })();

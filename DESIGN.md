@@ -31,10 +31,12 @@ The design review replaced the former dark, abstract positioning and code-heavy
 hero with concrete actions and a direct download. No customer claims or metrics
 were invented.
 
-The experience now breaks out of the text column to a maximum 1280px (formerly
-940px), with larger palettes and readable control text. The existing light
-palette and system/Hiragino type stay unchanged. The key guide stays above the
-desktop while scrolling on larger screens; mobile keeps it in normal flow.
+The experience breaks out of the text column to a maximum 1280px, with larger
+palettes and readable control text. The existing light palette and system/Hiragino
+type stay unchanged. Tabs and the desktop form one viewport-height composition.
+The key guide and completion status float inside the desktop at the bottom,
+with reserved space so the palette does not overlap them. There is no external
+caption/action row and no restart button.
 Feature illustrations each get their own wide row, with adjacent left-aligned
 copy and alternating placement. Below 760px these become single-column rows.
 The emphasis is on the existing interactions, not new decorative components.
@@ -45,12 +47,15 @@ The emphasis is on the existing interactions, not new decorative components.
   clipboard reads/writes, permissions or real application launches.
 - Clipboard search, selected result, paste, empty results, reset, app search,
   notes/Safari/calendar results, and window arrangement are interactive.
-- A large, clickable key guide above the desktop shows the current step. Palettes
-  start closed: Control+Shift+7 opens clipboard, +8 arranges windows, +9 opens
+- A large, clickable key guide inside the desktop shows the current step. Palettes
+  start closed: Option+Shift+7 opens clipboard, +8 toggles window layout, +9 opens
   apps. Enter confirms a selection. All actions also work with click/tap.
   Use physical Digit7/8/9 codes for shifted JIS/US layouts. Exact modifiers,
-  composition/repeat guards, and a visible-guide/focus boundary keep the handler
+  composition/repeat guards, and a visible-desktop/focus boundary keep the handler
   scoped to the demo. Native Vela settings are not changed.
+  Completed actions are immediately reusable with the same shortcut or keycap
+  button. Clipboard/app actions reopen search without clearing their result;
+  window layout toggles between overlapping and side-by-side positions.
   These chords are not listed in Chrome/Safari standard shortcut tables;
   custom OS shortcuts and extensions can still take priority.
   References: [Chrome shortcuts](https://support.google.com/chrome/answer/157179?hl=en)
@@ -70,12 +75,17 @@ The emphasis is on the existing interactions, not new decorative components.
 Run `npm run check`, `git diff --check`, and `npx wrangler deploy --dry-run`.
 Use `npm run dev -- --port 8791` for a local preview. In a real browser verify:
 
-1. Shortcut/button → clipboard search → Enter/paste → replay; unmatched query
-   disables both action buttons. Escape closes; IME Enter must not paste.
-2. Window layout ends with two non-overlapping equal-width windows.
-3. Search + Enter opens the selected app illustration, including Safari/calendar.
+1. Option+Shift+7/button → clipboard search → Enter/paste → immediately reopen
+   and paste a different entry; unmatched query disables confirmation. Escape
+   closes without discarding the last result; IME Enter must not paste.
+2. Option+Shift+8 repeatedly toggles equal-width non-overlapping windows and the
+   original overlapping positions, without any reset action.
+3. Option+Shift+9 + search + Enter opens the selected app illustration; reopen
+   and switch from Safari to calendar without a reset.
 4. The tour reaches the launcher result and stops; manual actions cancel it.
 5. Mobile widths 320/390, tablet 768 and desktop have no horizontal overflow.
+   Tabs + desktop fit within one viewport. Search/results remain above the
+   overlay, including in short viewports (the result list can scroll).
 6. FAQ expansion, keyboard tabs, direct DMG redirect and setup routes work.
 
 The frontend is HTML/CSS/vanilla JavaScript. No generated bitmap or video is
