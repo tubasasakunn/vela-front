@@ -35,6 +35,16 @@ were invented.
   clipboard reads/writes, permissions or real application launches.
 - Clipboard search, selected result, paste, empty results, reset, app search,
   notes/Safari/calendar results, and window arrangement are interactive.
+- A large, clickable key guide above the desktop shows the current step. Palettes
+  start closed: Control+Shift+7 opens clipboard, +8 arranges windows, +9 opens
+  apps. Enter confirms a selection. All actions also work with click/tap.
+  Use physical Digit7/8/9 codes for shifted JIS/US layouts. Exact modifiers,
+  composition/repeat guards, and a visible-guide/focus boundary keep the handler
+  scoped to the demo. Native Vela settings are not changed.
+  These chords are not listed in Chrome/Safari standard shortcut tables;
+  custom OS shortcuts and extensions can still take priority.
+  References: [Chrome shortcuts](https://support.google.com/chrome/answer/157179?hl=en)
+  and [Safari shortcuts](https://support.apple.com/en-kg/guide/safari/cpsh003/mac).
 - The optional 14-second tour walks through the three modes once. User actions
   interrupt it; hidden documents stop it. There is no infinite autoplay.
 - All demo content is fictitious. The page labels the demo as an illustration
@@ -50,7 +60,8 @@ were invented.
 Run `npm run check`, `git diff --check`, and `npx wrangler deploy --dry-run`.
 Use `npm run dev -- --port 8791` for a local preview. In a real browser verify:
 
-1. Clipboard result → paste → replay; unmatched query disables the action.
+1. Shortcut/button → clipboard search → Enter/paste → replay; unmatched query
+   disables both action buttons. Escape closes; IME Enter must not paste.
 2. Window layout ends with two non-overlapping equal-width windows.
 3. Search + Enter opens the selected app illustration, including Safari/calendar.
 4. The tour reaches the launcher result and stops; manual actions cancel it.
