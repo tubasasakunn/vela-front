@@ -10,6 +10,5 @@ npm run deploy
 ```
 
 The landing page deliberately has no analytics, forms, cookies, or server-side
-state. Its download links use GitHub's `releases/latest` route; update the
-repository reference in `src/index.ts` only if Vela changes where its notarized
-releases are published.
+state. `/download` redirects directly to the stable `Vela-latest.dmg` asset
+published automatically by the Vela release workflow.

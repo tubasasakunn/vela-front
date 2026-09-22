@@ -1,4 +1,5 @@
-const downloadURL = "https://github.com/tubasasakunn/vela/releases/latest";
+const releaseDMGURL = "https://github.com/tubasasakunn/vela/releases/latest/download/Vela-latest.dmg";
+const downloadURL = "/download";
 const appIconURL = "https://raw.githubusercontent.com/tubasasakunn/vela/main/Resources/AppIcon.iconset/icon_512x512.png";
 
 const page = `<!doctype html>
@@ -202,6 +203,9 @@ editing. Finish with \`vela check\` and \`vela reload\`.
 export default {
   fetch(request): Response {
     const url = new URL(request.url);
+    if (url.pathname === downloadURL) {
+      return Response.redirect(releaseDMGURL, 302);
+    }
     if (url.pathname === "/setup") {
       return Response.redirect(new URL("/setup.md", url).toString(), 308);
     }
